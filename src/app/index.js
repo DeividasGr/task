@@ -1,33 +1,37 @@
 import { useState, useEffect } from 'react';
-import Unsplash from '../api/Unsplash';
+import { Container } from 'react-bootstrap';
+import ImageList from './components/ImageList';
+import Select from './components/Select';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const [value, setValue] = useState('');
   const [images, setImages] = useState([]);
-  const [order, setOrder] = useState(false);
-
-  const check = order && 'latest';
+  const [count, setCount] = useState(20);
+  const [sortType, setSortType] = useState('');
 
   useEffect(() => {
-    const search = async () => {
-      const response = await Unsplash.get('/search/photos', {
-        params: {
-          query: 'dog',
-          per_page: 20,
-          order_by: check,
-        },
-      });
-      const { results } = response.data;
-      setImages(results);
+    const sortImagesArray = (type) => {
+      const types = {
+        downloads: 'downloads',
+        likes: 'likes',
+        views: 'views',
+      };
+      const sortProperty = types[type];
+      const sortedImages = [...images].sort(
+        (a, b) => b[sortProperty] - a[sortProperty]
+      );
+      setImages(sortedImages);
     };
-    search();
-  }, [check]);
+    sortImagesArray(sortType);
+  }, [sortType]);
 
   return (
-    <div>
-      App
-      <button onClick={() => setOrder(!order)}>Latest</button>
-    </div>
+    <Container>
+      <main>
+        <Select setSortType={setSortType} />
+        <ImageList images={images} count={count} setImages={setImages} />
+      </main>
+    </Container>
   );
 }
 

@@ -1,0 +1,27 @@
+.col-md-6 {
+  height: 300px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+.col-md-6 img {
+  height: auto;
+}
+
+@media only screen and (max-width: 1000px) {
+  .col-md-6 {
+    height: 250px;
+  }
+  .col-md-6 img {
+    height: 100%;
+  }
+}
+
+@media only screen and (max-width: 780px) {
+  .col-md-6 {
+    height: auto;
+  }
+  .col-md-6 img {
+    width: 100%;
+    height: auto;
+  }
+}
